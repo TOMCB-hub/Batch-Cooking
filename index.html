@@ -83,7 +83,7 @@ function openRecipe(i){
  current=recipes[i]; portions=current.servings; variant=Object.keys(current.variants||{})[0]||null;
  $("catalog").style.display="none";$("detail").style.display="block";
  $("dtag").textContent=current.category;$("dtitle").textContent=current.title;
- const m=macroFor(current); $("dmeta").textContent=`Base : ${current.servings} portion(s) • ${current.time} • ${current.temp} • ${m.kcal} kcal • ${m.p} g protéines • ${m.f} g lipides • ${m.c} g glucides / portion`;
+ const m=macroFor(current,variant); $("dmeta").textContent=`Base : ${current.servings} portion(s) • ${current.time} • ${current.temp} • ${m.kcal} kcal • ${m.p} g protéines • ${m.f} g lipides • ${m.c} g glucides / portion`;
  $("dvisual").innerHTML=visualFor(current);
  const vals=[1,2,3,4,current.servings];
  const unique=[...new Set(vals.filter(x=>x>0))];
