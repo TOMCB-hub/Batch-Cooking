@@ -246,7 +246,7 @@ function renderCookingStep(){const total=cookSteps.length||1;$("cookStepLabel").
 function cookPrev(){if(cookIndex>0){cookIndex--;renderCookingStep()}}
 function cookNext(){if(cookIndex<cookSteps.length-1){cookIndex++;renderCookingStep()}else closeCooking()}
 function closeCooking(){$("cookModal").classList.remove("open")}
-$("planner").style.display="none";$("detail").style.display="none";$("catalog").style.display="block";window.scrollTo({top:0,behavior:"smooth"});render()}
+function showCatalog(){$("planner").style.display="none";$("detail").style.display="none";$("catalog").style.display="block";window.scrollTo({top:0,behavior:"smooth"});render()}
 render();
 </script>
 </body></html>
