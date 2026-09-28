@@ -237,7 +237,14 @@ function cookStepsFor(r){
   const raw=String(r.steps||"").split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
   const out=[];
   if(r.temp&&/°c/i.test(r.temp))out.push("Préchauffe ton four à "+r.temp+".");
-  raw.forEach(s=>{if(out.length<6)out.push(s)});
+  raw.forEach(s=>out.push(s));
+  while(out.length<6){
+    let best=-1,bestLen=0,bestParts=null;
+    out.forEach((s,i)=>{const parts=s.split(/,\s+(?=(?:puis|et|ensuite|pour|avant|ajouter|remettre)\b)/i);if(parts.length>1&&s.length>bestLen){best=i;bestLen=s.length;bestParts=parts}});
+    if(best<0)break;
+    const mid=Math.ceil(bestParts.length/2);
+    out.splice(best,1,bestParts.slice(0,mid).join(", "),bestParts.slice(mid).join(", "));
+  }
   if(!out.length)out.push("Prépare les ingrédients et le matériel nécessaires.");
   return out.slice(0,6);
 }
