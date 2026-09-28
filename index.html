@@ -195,7 +195,8 @@ function renderBatchPanel(){
   '<div class="batch-total"><div class="batch-stat"><strong>'+d.totalPortions+'</strong>portions totales</div><div class="batch-stat"><strong>'+money(d.totalCost)+'</strong>budget estimé</div></div>'+
   '<h3 style="margin:18px 0 0">🛒 Liste de courses regroupée</h3><div class="small">Coche les ingrédients au fur et à mesure des achats.</div><div class="batch-shopping">'+(d.groups.length?d.groups.map(i=>'<label><input type="checkbox"><span>'+fmt(i.qty)+' '+i.unit+' — '+i.name+'</span></label>').join(""):'<div class="empty">Aucun ingrédient.</div>')+'</div>';
 }
-
+function renderPlanner(){
+  renderBatchPanel();
   const grid=$("weekGrid"); if(!grid)return;
   grid.innerHTML=days.map((day,d)=>'<div class="day"><div class="day-head"><div class="day-name">'+day+'</div><div class="day-date">Jour '+(d+1)+'</div></div>'+meals.map(([meal,label])=>{
     const entries=planner.filter(x=>x.day===d&&x.meal===meal);
