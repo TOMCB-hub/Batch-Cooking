@@ -53,7 +53,7 @@ main{max-width:1180px;margin:auto;padding:20px 18px 90px}.topbar{position:sticky
 <div class="filter-field"><label>Temps max.</label><select id="timeFilter"><option value="all">Tous</option><option value="30">30 min</option><option value="45">45 min</option><option value="60">60 min</option></select></div>
 <div class="filter-field"><label>Mode</label><select id="modeFilter"><option value="all">Tous</option><option value="four">Four</option><option value="other">Sans four</option></select></div><div class="filter-field"><label>Budget max. / portion</label><select id="budgetFilter"><option value="all">Tous</option><option value="2">2 €</option><option value="3">3 €</option><option value="4">4 €</option><option value="5">5 €</option></select><div class="budget-filter-note">Prix indicatif</div></div>
 </div></div>
-<div id="batchToolbar" class="batch-toolbar" style="display:none"><div><strong id="batchSelectedCount">0 recette sélectionnée</strong><div class="small">Sélectionne plusieurs recettes pour préparer ton batch en une fois.</div></div><div class="batch-toolbar-actions"><button onclick="clearBatchSelection()">Tout désélectionner</button><button class="primary" onclick="addSelectedToBatch()">🧺 Préparer ce batch</button></div></div><div class="results-head"><div><strong id="resultsTitle">Toutes les recettes</strong><div id="resultsCount" class="results-count"></div></div><button class="filter-btn" onclick="resetFilters()">Réinitialiser</button></div><div id="grid" class="grid"></div></section>
+<div id="batchToolbar" class="batch-toolbar" style="display:none"><div><strong id="batchSelectedCount">0 recette sélectionnée</strong><div class="small">Sélectionne plusieurs recettes pour préparer ton batch en une fois.</div></div><div class="batch-toolbar-actions"><button onclick="clearBatchSelection()">Tout désélectionner</button><button class="primary" onclick="addSelectedToBatch()">🧺 Préparer ce batch</button></div></div><div class="results-head"><div><strong id="resultsTitle">Toutes les recettes</strong><div id="resultsCount" class="results-count"></div></div><button class="filter-btn" onclick="resetFilters(true)">Réinitialiser</button></div><div id="grid" class="grid"></div></section>
 
 <section id="planner">
   <button class="filter back" onclick="showCatalog()">← Retour aux recettes</button>
@@ -313,8 +313,17 @@ const fridge=/salade|crudite|avocat|concombre/.test(t)?"2–3 jours":"3–4 jour
 return '<div class="storage-box"><strong>📦 Conservation batch cooking</strong><div class="storage-grid"><div><strong>🧊 Frigo</strong>'+fridge+'</div><div><strong>❄️ Congélateur</strong>'+freezer+'</div><div><strong>♨️ Réchauffage</strong>Four ou micro-ondes selon le plat</div></div><div class="small" style="margin-top:8px">Repères pratiques, à adapter à la recette et à la chaîne du froid.</div></div>';
 }
 function quickFilter(type){
-$("calorieFilter").value="all";$("proteinFilter").value="all";$("timeFilter").value="all";$("modeFilter").value="all";
-const q=$("search");if(type==="protein")$("proteinFilter").value="40";else if(type==="light")$("calorieFilter").value="550";else if(type==="fast")$("timeFilter").value="30";else if(type==="oven")$("modeFilter").value="four";else if(type==="lentils")q.value="lentilles";else if(type==="quinoa")q.value="quinoa";render();
+  // Chaque filtre rapide repart d'un état propre pour éviter les filtres cumulés.
+  resetFilters(false);
+  const q=$("search");
+  if(type==="protein")$("proteinFilter").value="40";
+  else if(type==="light")$("calorieFilter").value="550";
+  else if(type==="fast")$("timeFilter").value="30";
+  else if(type==="oven")$("modeFilter").value="four";
+  else if(type==="lentils")q.value="lentilles";
+  else if(type==="quinoa")q.value="quinoa";
+  else if(type==="budget")$("budgetFilter").value="3";
+  render();
 }
 function savePantry(){localStorage.setItem("batchPantry",JSON.stringify(pantry))}
 function addPantry(){const input=$("pantryInput"),raw=(input.value||"").split(",").map(x=>canon(x)).filter(Boolean);raw.forEach(x=>{if(!pantry.includes(x))pantry.push(x)});savePantry();input.value="";renderProfile()}
@@ -338,14 +347,32 @@ function toggleFavorite(i,e){if(e)e.stopPropagation();favorites=isFavorite(i)?fa
 function toggleFavorites(){favoritesOnly=!favoritesOnly;const b=$("favToggle");if(b)b.classList.toggle("active",favoritesOnly);render()}
 function toggleFilters(){$("filtersPanel").classList.toggle("open")}
 function focusSearch(){$("search").focus();window.scrollTo({top:0,behavior:"smooth"})}
-function resetFilters(){["calorieFilter","proteinFilter","timeFilter","modeFilter"].forEach(id=>$(id).value="all");render()}
+function resetFilters(renderNow=true){
+  $("search").value="";
+  ["calorieFilter","proteinFilter","timeFilter","modeFilter","budgetFilter"].forEach(id=>{
+    if($(id))$(id).value="all";
+  });
+  favoritesOnly=false;
+  const fav=$( "favToggle" );
+  if(fav)fav.classList.remove("active");
+  filter="Tous";
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.cat==="Tous"));
+  document.querySelectorAll(".smart-chip").forEach(x=>x.classList.remove("active"));
+  if(renderNow)render();
+}
 function timeMinutes(r){const m=String(r.time||"").match(/\d+/);return m?parseInt(m[0]):999}
 function matchesFilters(r){const m=macroFor(r),k=$("calorieFilter").value,p=$("proteinFilter").value,t=$("timeFilter").value,mode=$("modeFilter").value;if(k!=="all"&&m.kcal>+k)return false;if(p!=="all"&&m.p<+p)return false;if(t!=="all"&&timeMinutes(r)>+t)return false;if(mode==="four"&&!norm(r.temp||"").includes("°c"))return false;if(mode==="other"&&norm(r.temp||"").includes("°c"))return false;return true}
 const baseMatchesV9=matchesFilters;matchesFilters=function(r){if(!baseMatchesV9(r))return false;const b=$("budgetFilter");if(b&&b.value!=="all"){const c=costFor(r);if(c==null||c>+b.value)return false}return true};
 function placeholder(){return '<div class="photo-placeholder"><div><strong>🍽️</strong><span>Photo à ajouter<br><small>après test de la recette</small></span></div></div>'}
 function visualFor(r){return r.photo?'<img src="'+r.photo+'" alt="'+r.title+'" loading="lazy">':placeholder()}
 function render(){const q=norm($("search").value||"");const list=recipes.filter((r,i)=>(filter==="Tous"||r.category===filter)&&(!favoritesOnly||isFavorite(i))&&matchesFilters(r)&&(!q||norm(r.title+" "+(r.ingredients||[]).map(x=>x[0]).join(" ")).includes(q)));$("resultsTitle").textContent=favoritesOnly?"Mes recettes favorites":(filter==="Tous"?"Toutes les recettes":filter);$("resultsCount").textContent=list.length+" recette"+(list.length>1?"s":"");$("batchToolbar").style.display=batchSelection.length?"flex":"none";if($("batchCount"))$("batchCount").textContent=batchSelection.length;$("batchSelectedCount").textContent=batchSelection.length+" recette"+(batchSelection.length>1?"s":"")+" sélectionnée"+(batchSelection.length>1?"s":"");$("grid").innerHTML=list.map(r=>{const i=recipes.indexOf(r),m=macroFor(r);return '<article class="card" onclick="openRecipe('+i+')"><div class="card-img"><label class="batch-check" onclick="event.stopPropagation()" title="Sélectionner pour le batch"><input type="checkbox" '+(batchSelection.some(x=>x.recipeIndex===i)?"checked":"")+' onchange="toggleBatchRecipe('+i+',event)" aria-label="Sélectionner '+r.title+' pour le batch"></label>'+visualFor(r)+'<button class="heart '+(isFavorite(i)?"saved":"")+'" onclick="toggleFavorite('+i+',event)" aria-label="Favori">'+(isFavorite(i)?"♥":"♡")+'</button></div><div class="card-body"><span class="tag">'+r.category+'</span><h2>'+r.title+'</h2><div class="meta">⏱ '+r.time+' · 🍽 '+r.servings+' portions</div><div class="macro-line"><span class="macro-pill">🔥 '+m.kcal+' kcal</span><span class="macro-pill">💪 '+m.p+' g prot.</span></div></div></article>'}).join("")||'<div class="empty">Aucune recette ne correspond à ces critères.</div>'}
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{filter=b.dataset.cat;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()});
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  resetFilters(false);
+  filter=b.dataset.cat;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  render();
+});
 ["search","calorieFilter","proteinFilter","timeFilter","modeFilter","budgetFilter"].forEach(id=>{if($(id))$(id).addEventListener(id==="search"?"input":"change",render)});
 function openRecipe(i){$("planner").style.display="none";current=recipes[i];portions=current.servings;variant=Object.keys(current.variants||{})[0]||null;$("catalog").style.display="none";$("detail").style.display="block";window.scrollTo({top:0,behavior:"smooth"});$("dtag").textContent=current.category;$("dtitle").textContent=current.title;const m=macroFor(current,variant);$("dmeta").innerHTML="🍽 "+current.servings+" portions · ⏱ "+current.time+" · 🔥 "+m.kcal+" kcal · 💪 "+m.p+" g protéines / portion<br><span class=\"detail-cost\">💶 "+costLabel(current,variant)+"</span>";$("dvisual").innerHTML=visualFor(current);$("controls").innerHTML='<div><b>Nombre de portions :</b></div><div class="portion">'+[1,2,3,4].map(n=>'<button onclick="setPortions('+n+')" id="p'+n+'">'+n+'</button>').join("")+'</div><input id="customPortions" type="number" min="1" value="'+portions+'" onchange="setPortions(this.value)"><span class="small">portions</span>';setPortions(portions)}
 function setPortions(n){n=Math.max(1,parseInt(n)||1);portions=n;document.querySelectorAll(".portion button").forEach(b=>b.classList.remove("active"));let b=$("p"+n);if(b)b.classList.add("active");if($("customPortions"))$("customPortions").value=n;renderDetail()}
