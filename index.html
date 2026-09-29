@@ -260,7 +260,7 @@ function startTimer(seconds){clearInterval(timerInterval);timerSeconds=Math.max(
 function renderTimer(){const m=Math.floor(timerSeconds/60),sec=timerSeconds%60;if($("timerDisplay"))$("timerDisplay").textContent=String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0")}
 function resetTimer(){clearInterval(timerInterval);timerInterval=null;timerSeconds=0;renderTimer();if($("cookHint"))$("cookHint").textContent="Utilise le minuteur quand une étape nécessite une attente."}
 const baseCookNextV6=cookNext;cookNext=function(){if(cookIndex<cookSteps.length-1){cookIndex++;renderCookingStep()}else{completeCooking();closeCooking()}};
-const baseStepV6=renderCookingStep;renderCookingStep=function(){baseStepV6();if($("cookNextBtn"))$("cookNextBtn").textContent=cookIndex===cookSteps.length-1?"Terminer ✓":"Suivante →"};
+const baseCloseCookingV8=closeCooking;closeCooking=function(){resetTimer();baseCloseCookingV8()};const baseStartCookingV8=startCooking;startCooking=function(){resetTimer();baseStartCookingV8()};const baseStepV6=renderCookingStep;renderCookingStep=function(){baseStepV6();if($("cookNextBtn"))$("cookNextBtn").textContent=cookIndex===cookSteps.length-1?"Terminer ✓":"Suivante →"};
 function aisleFor(name){
 const n=norm(name);
 if(/poulet|boeuf|cabillaud|tofu|oeuf/.test(n))return "🥩 Viandes, poisson & œufs";
