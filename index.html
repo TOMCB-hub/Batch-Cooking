@@ -181,8 +181,8 @@ function saveShoppingChecks(){localStorage.setItem("shoppingChecked",JSON.string
 function shoppingKey(name,unit){return canon(name)+"|"+canon(unit)}
 function toggleShoppingCheck(key,checked){shoppingChecked[key]=checked;saveShoppingChecks();renderPlanner();if($("shoppingPage").style.display!=="none")renderShoppingPage()}
 function clearShoppingChecks(){shoppingChecked={};saveShoppingChecks();renderPlanner();renderShoppingPage()}
-function showPlanner(){ $("catalog").style.display="none"; $("detail").style.display="none"; $("shoppingPage").style.display="none"; $("planner").style.display="block"; renderPlanner(); window.scrollTo({top:0,behavior:"smooth"})}
-function showShopping(){ $("catalog").style.display="none"; $("detail").style.display="none"; $("planner").style.display="none"; $("shoppingPage").style.display="block"; renderShoppingPage(); window.scrollTo({top:0,behavior:"smooth"})}
+function showPlanner(){ $("catalog").style.display="none"; $("detail").style.display="none"; $("profilePage").style.display="none"; $("shoppingPage").style.display="none"; $("planner").style.display="block"; renderPlanner(); window.scrollTo({top:0,behavior:"smooth"})}
+function showShopping(){ $("catalog").style.display="none"; $("detail").style.display="none"; $("profilePage").style.display="none"; $("planner").style.display="none"; $("shoppingPage").style.display="block"; renderShoppingPage(); window.scrollTo({top:0,behavior:"smooth"})}
 function clearPlanner(){if(!planner.length)return;if(confirm("Vider tout le planning ?")){planner=[];savePlanner();renderPlanner()}}
 function addToPlanner(recipeIndex,day,meal,servings){planner.push({id:Date.now()+Math.random(),recipeIndex,day,meal,servings:Math.max(1,parseInt(servings)||1)});savePlanner();renderPlanner()}
 function openPlanModal(){
@@ -323,7 +323,7 @@ function renderCookingStep(){const total=cookSteps.length||1;$("cookStepLabel").
 function cookPrev(){if(cookIndex>0){cookIndex--;renderCookingStep()}}
 function cookNext(){if(cookIndex<cookSteps.length-1){cookIndex++;renderCookingStep()}else closeCooking()}
 function closeCooking(){$("cookModal").classList.remove("open")}
-function showCatalog(){$("planner").style.display="none";$("shoppingPage").style.display="none";$("detail").style.display="none";$("catalog").style.display="block";window.scrollTo({top:0,behavior:"smooth"});render()}
+function showCatalog(){$("planner").style.display="none";$("shoppingPage").style.display="none";$("detail").style.display="none";$("profilePage").style.display="none";$("catalog").style.display="block";window.scrollTo({top:0,behavior:"smooth"});render()}
 $("shoppingPage").style.display="none";
 render();
 </script>
