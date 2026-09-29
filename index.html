@@ -248,6 +248,17 @@ function renderPlanner(){
   $("shopList").innerHTML=items.length?items.map(x=>{const key=shoppingKey(x.name,x.unit);const checked=!!shoppingChecked[key];return '<label class="shop-group'+(checked?' checked':'')+'"><input type="checkbox" '+(checked?'checked':'')+' onchange="toggleShoppingCheck(\''+key.replace(/'/g,"\\'")+'\',this.checked)"><span style="flex:1"><span>'+x.name+'</span><span style="float:right"><strong>'+fmt(x.qty)+' '+x.unit+'</strong> '+budgetLine(x.cost,knownShopCost)+'</span></span></label>'}).join("")+'<div class="shop-total"><span>Total des aliments chiffrés</span><strong>'+money(knownShopCost)+'</strong></div>':'<div class="empty">Ajoute des recettes au planning pour générer ta liste.</div>';
 }
 
+function enhanceRenderedCards(){
+document.querySelectorAll(".card").forEach(card=>{const title=card.querySelector("h2");if(!title)return;const r=recipes.find(x=>x.title===title.textContent);if(!r)return;const body=card.querySelector(".card-body");if(body&&!body.querySelector(".card-badges"))body.insertAdjacentHTML("beforeend",'<div class="card-badges">'+recipeBadges(r)+'</div><div class="budget-mini">'+costLabel(r)+'</div>')});
+}
+const baseRenderV6=render;render=function(){baseRenderV6();enhanceRenderedCards()};
+const baseOpenV6=openRecipe;openRecipe=function(i){baseOpenV6(i);if($("detailBadges"))$("detailBadges").innerHTML=recipeBadges(current);if($("storageBox"))$("storageBox").innerHTML=storageFor(current)};
+function completeCooking(){if(!current)return;const i=recipes.indexOf(current);if(i<0)return;cookedHistory=cookedHistory.filter(x=>x.i!==i);cookedHistory.push({i:i,t:Date.now()});cookedHistory=cookedHistory.slice(-30);localStorage.setItem("batchCookedHistory",JSON.stringify(cookedHistory))}
+function startTimer(seconds){clearInterval(timerInterval);timerSeconds=Math.max(0,seconds||0);renderTimer();timerInterval=setInterval(()=>{timerSeconds--;renderTimer();if(timerSeconds<=0){clearInterval(timerInterval);timerInterval=null;$("cookHint").textContent="⏰ Temps écoulé !"}},1000)}
+function renderTimer(){const m=Math.floor(timerSeconds/60),sec=timerSeconds%60;if($("timerDisplay"))$("timerDisplay").textContent=String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0")}
+function resetTimer(){clearInterval(timerInterval);timerInterval=null;timerSeconds=0;renderTimer();if($("cookHint"))$("cookHint").textContent="Utilise le minuteur quand une étape nécessite une attente."}
+const baseCookNextV6=cookNext;cookNext=function(){if(cookIndex<cookSteps.length-1){cookIndex++;renderCookingStep()}else{completeCooking();closeCooking()}};
+const baseStepV6=renderCookingStep;renderCookingStep=function(){baseStepV6();if($("cookNextBtn"))$("cookNextBtn").textContent=cookIndex===cookSteps.length-1?"Terminer ✓":"Suivante →"};
 const $=id=>document.getElementById(id);
 function recipeBadges(r){
 const m=macroFor(r),t=timeMinutes(r),tags=[];
