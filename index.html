@@ -161,7 +161,7 @@ function macroFor(r,selectedVariant=null){let kcal=0,p=0,f=0,c=0;const pieceWeig
 function usefulNote(note){if(!note)return "";const n=norm(note);return /source|proposition|propose|adaptation|absente|non précise|incomplète|volontairement signalée|quantité.*fournie|température.*durée.*propos/.test(n)?"":note}
 function norm(v){return String(v??"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
 
-let current=null,portions=1,variant=null,filter="Tous",favorites=JSON.parse(localStorage.getItem("batchFavorites")||"[]"),favoritesOnly=false;
+let current=null,portions=1,variant=null,filter="Tous",favorites=JSON.parse(localStorage.getItem("batchFavorites")||"[]"),favoritesOnly=false;let pantry=JSON.parse(localStorage.getItem("batchPantry")||"[]");let cookedHistory=JSON.parse(localStorage.getItem("batchCookedHistory")||"[]");let timerInterval=null,timerSeconds=0;
 let planner=JSON.parse(localStorage.getItem("batchPlanner")||"[]");
 let batchSelection=JSON.parse(localStorage.getItem("batchSelection")||"[]");
 let shoppingChecked=JSON.parse(localStorage.getItem("shoppingChecked")||"{}");
@@ -249,6 +249,42 @@ function renderPlanner(){
 }
 
 const $=id=>document.getElementById(id);
+function recipeBadges(r){
+const m=macroFor(r),t=timeMinutes(r),tags=[];
+if(m.p>=40)tags.push('<span class="recipe-badge green">💪 Protéiné</span>');
+if(m.kcal<=550)tags.push('<span class="recipe-badge">🔥 ≤ 550 kcal</span>');
+if(t<=30)tags.push('<span class="recipe-badge">⚡ Rapide</span>');
+if(norm(r.temp||"").includes("°c"))tags.push('<span class="recipe-badge">🔥 Four</span>');
+const ing=norm((r.ingredients||[]).map(x=>x[0]).join(" "));
+if(/lentille/.test(ing))tags.push('<span class="recipe-badge green">🫘 Lentilles</span>');
+if(/quinoa/.test(ing))tags.push('<span class="recipe-badge green">🌾 Quinoa</span>');
+if(/one pot|gratin|batch/.test(norm(r.title)))tags.push('<span class="recipe-badge">📦 Batch</span>');
+const c=costFor(r);if(c!=null&&c<=3)tags.push('<span class="recipe-badge gold">💶 Petit budget</span>');
+return tags.slice(0,4).join("");
+}
+function storageFor(r){
+const t=norm(r.title+" "+r.steps+" "+r.note);
+const freezer=/congel|freezer/.test(t)?"Oui":/muffin|cookie|barre|granola|baked oats/.test(t)?"Possible":"À tester";
+const fridge=/salade|crudite|avocat|concombre/.test(t)?"2–3 jours":"3–4 jours";
+return '<div class="storage-box"><strong>📦 Conservation batch cooking</strong><div class="storage-grid"><div><strong>🧊 Frigo</strong>'+fridge+'</div><div><strong>❄️ Congélateur</strong>'+freezer+'</div><div><strong>♨️ Réchauffage</strong>Four ou micro-ondes selon le plat</div></div><div class="small" style="margin-top:8px">Repères pratiques, à adapter à la recette et à la chaîne du froid.</div></div>';
+}
+function quickFilter(type){
+$("calorieFilter").value="all";$("proteinFilter").value="all";$("timeFilter").value="all";$("modeFilter").value="all";
+const q=$("search");if(type==="protein")$("proteinFilter").value="40";else if(type==="light")$("calorieFilter").value="550";else if(type==="fast")$("timeFilter").value="30";else if(type==="oven")$("modeFilter").value="four";else if(type==="lentils")q.value="lentilles";else if(type==="quinoa")q.value="quinoa";render();
+}
+function savePantry(){localStorage.setItem("batchPantry",JSON.stringify(pantry))}
+function addPantry(){const input=$("pantryInput"),raw=(input.value||"").split(",").map(x=>canon(x)).filter(Boolean);raw.forEach(x=>{if(!pantry.includes(x))pantry.push(x)});savePantry();input.value="";renderProfile()}
+function removePantryByIndex(i){pantry.splice(i,1);savePantry();renderProfile()}
+function pantryScore(r){if(!pantry.length)return 0;const ing=(r.ingredients||[]).map(x=>canon(x[0]));return pantry.reduce((n,p)=>n+(ing.some(i=>i.includes(p)||p.includes(i))?1:0),0)}
+function showProfile(){$("catalog").style.display="none";$("planner").style.display="none";$("shoppingPage").style.display="none";$("detail").style.display="none";$("profilePage").style.display="block";renderProfile();window.scrollTo({top:0,behavior:"smooth"})}
+function renderProfile(){
+$("pantryTags").innerHTML=pantry.length?pantry.map((p,i)=>'<span class="pantry-tag">'+p+' <button onclick="removePantryByIndex('+i+')">×</button></span>').join(""):'<span class="small">Aucun ingrédient enregistré.</span>';
+const matches=recipes.map((r,i)=>({r:r,i:i,score:pantryScore(r)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,8);
+$("pantryMatches").innerHTML=matches.length?matches.map(x=>'<div class="match-item"><span><strong>'+x.r.title+'</strong><br><span class="small">'+x.score+' ingrédient'+(x.score>1?"s":"")+' trouvé'+(x.score>1?"s":"")+'</span></span><button class="planner-action" onclick="openRecipe('+x.i+')">Voir →</button></div>').join(""):'<div class="profile-empty">Ajoute quelques ingrédients pour voir les recettes correspondantes.</div>';
+const fav=favorites.filter(i=>recipes[i]);$("profileFavorites").innerHTML=fav.length?fav.map(i=>'<div class="match-item"><span><strong>'+recipes[i].title+'</strong></span><button class="planner-action" onclick="openRecipe('+i+')">Voir →</button></div>').join(""):'<div class="profile-empty">Pas encore de favoris.</div>';
+const hist=cookedHistory.slice().reverse().filter(x=>recipes[x.i]).slice(0,8);$("profileHistory").innerHTML=hist.length?hist.map(x=>'<div class="history-item"><span>'+recipes[x.i].title+'</span><span class="small">'+new Date(x.t).toLocaleDateString("fr-FR")+'</span></div>').join(""):'<div class="profile-empty">Cuisiner une recette la fera apparaître ici.</div>';
+$("profileBatchSummary").innerHTML=batchSelection.length?'<p><strong>'+batchSelection.length+' recette'+(batchSelection.length>1?"s":"")+'</strong> sélectionnée'+(batchSelection.length>1?"s":"")+' pour ton prochain batch.</p>':'<p class="small">Aucune recette sélectionnée pour le moment.</p>';
+}
 function isFavorite(i){return favorites.includes(i)}
 function saveFavorites(){localStorage.setItem("batchFavorites",JSON.stringify(favorites))}
 function toggleFavorite(i,e){if(e)e.stopPropagation();favorites=isFavorite(i)?favorites.filter(x=>x!==i):[...favorites,i];saveFavorites();render()}
