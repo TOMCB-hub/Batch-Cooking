@@ -229,17 +229,17 @@ function clearBatchSelection(){batchSelection=[];saveBatch();render()}
 function addSelectedToBatch(){if(!batchSelection.length)return;showPlanner()}
 function removeBatchRecipe(i){batchSelection=batchSelection.filter(x=>x.recipeIndex!==i);saveBatch();renderPlanner();render()}
 function setBatchPortions(i,n){const x=batchSelection.find(x=>x.recipeIndex===i);if(!x)return;x.servings=Math.max(1,parseInt(n)||1);saveBatch();renderPlanner()}
-function batchData(){const groups={},items=[];let totalPortions=0,totalCost=0;batchSelection.forEach(x=>{const r=recipes[x.recipeIndex];if(!r)return;totalPortions+=x.servings;const c=costFor(r);if(c!=null)totalCost+=c*x.servings;const addItems=list=>list.forEach(i=>{const key=canon(i[0])+"|"+canon(i[2]);const qty=(qtyNumber(i[1])||0)*x.servings/(r.servings||1);const cost=ingredientCost(i);if(!groups[key])groups[key]={name:i[0],unit:i[2],qty:0,cost:0};groups[key].qty+=qty;if(cost!=null)groups[key].cost+=cost*x.servings/(r.servings||1)});addItems(r.ingredients||[]);if(r.variants){const v=Object.keys(r.variants)[0];addItems(r.variants[v]||[])}});return {groups:Object.values(groups).sort((a,b)=>a.name.localeCompare(b.name,"fr")),totalPortions,totalCost}}
+function batchData(){const groups={},items=[];let totalPortions=0,totalCost=0;batchSelection.forEach(x=>{const r=recipes[x.recipeIndex];if(!r)return;totalPortions+=x.servings;const c=costFor(r);if(c!=null)totalCost+=c*x.servings;const addItems=list=>list.forEach(i=>{const key=canon(i[0])+"|"+canon(i[2]);const qty=(qtyNumber(i[1])||0)*(Number(x.servings??x.portions)||1)/(r.servings||1);const cost=ingredientCost(i);if(!groups[key])groups[key]={name:i[0],unit:i[2],qty:0,cost:0};groups[key].qty+=qty;if(cost!=null)groups[key].cost+=cost*(Number(x.servings??x.portions)||1)/(r.servings||1)});addItems(r.ingredients||[]);if(r.variants){const v=Object.keys(r.variants)[0];addItems(r.variants[v]||[])}});return {groups:Object.values(groups).sort((a,b)=>a.name.localeCompare(b.name,"fr")),totalPortions,totalCost}}
 const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const meals=[["midi","Déjeuner"],["soir","Dîner"]];
-function savePlanner(){localStorage.setItem("batchPlanner",JSON.stringify(planner))}
+function savePlanner(){localStorage.setItem("batchPlanner",JSON.stringify(planner));if($("shoppingPage")&&$("shoppingPage").style.display!=="none")renderShoppingPage()}
 function saveShoppingChecks(){localStorage.setItem("shoppingChecked",JSON.stringify(shoppingChecked))}
 function shoppingKey(name,unit){return canon(name)+"|"+canon(unit)}
 function toggleShoppingCheck(key,checked){shoppingChecked[key]=checked;saveShoppingChecks();renderPlanner();if($("shoppingPage").style.display!=="none")renderShoppingPage()}
 function clearShoppingChecks(){shoppingChecked={};saveShoppingChecks();renderPlanner();renderShoppingPage()}
 function showPlanner(){ setActiveNav("batch"); $("catalog").style.display="none"; $("detail").style.display="none"; $("profilePage").style.display="none"; $("shoppingPage").style.display="none"; $("planner").style.display="block"; renderPlanner(); window.scrollTo({top:0,behavior:"smooth"})}
 function showShopping(){ setActiveNav("shopping"); $("catalog").style.display="none"; $("detail").style.display="none"; $("profilePage").style.display="none"; $("planner").style.display="none"; $("shoppingPage").style.display="block"; renderShoppingPage(); window.scrollTo({top:0,behavior:"smooth"})}
-function clearPlanner(){if(!planner.length)return;if(confirm("Vider tout le planning ?")){planner=[];savePlanner();renderPlanner()}}
+function clearPlanner(){if(!planner.length&&!batchSelection.length)return;if(confirm("Vider le planning et les courses associées ?")){planner=[];batchSelection=[];savePlanner();saveBatchSelection();shoppingChecked={};saveShoppingChecks();renderPlanner();if($("shoppingPage").style.display!=="none")renderShoppingPage()}}
 function addToPlanner(recipeIndex,day,meal,servings){planner.push({id:Date.now()+Math.random(),recipeIndex,day,meal,servings:Math.max(1,parseInt(servings)||1)});savePlanner();renderPlanner()}
 function openPlanModal(){
   if(!current)return;
@@ -275,7 +275,7 @@ function renderBatchPanel(){
 function getShoppingItems(){
   const source=planner.length?planner:null;
   const groups={};
-  if(source){source.forEach(x=>{const r=recipes[x.recipeIndex];const addItems=list=>list.forEach(i=>{const key=shoppingKey(i[0],i[2]);const qty=(qtyNumber(i[1])||0)*x.servings/(r.servings||1);const cost=ingredientCost(i);if(!groups[key])groups[key]={name:i[0],unit:i[2],qty:0,cost:0};groups[key].qty+=qty;if(cost!=null)groups[key].cost+=cost*x.servings/(r.servings||1)});addItems(r.ingredients||[]);if(r.variants){const v=Object.keys(r.variants)[0];addItems(r.variants[v]||[])}})}
+  if(source){source.forEach(x=>{const r=recipes[x.recipeIndex];if(!r)return;const addItems=list=>list.forEach(i=>{const key=shoppingKey(i[0],i[2]);const qty=(qtyNumber(i[1])||0)*x.servings/(r.servings||1);const cost=ingredientCost(i);if(!groups[key])groups[key]={name:i[0],unit:i[2],qty:0,cost:0};groups[key].qty+=qty;if(cost!=null)groups[key].cost+=cost*x.servings/(r.servings||1)});addItems(r.ingredients||[]);if(r.variants){const v=Object.keys(r.variants)[0];addItems(r.variants[v]||[])}})}
   else if(batchSelection.length){batchSelection.forEach(x=>{const r=recipes[x.recipeIndex];const addItems=list=>list.forEach(i=>{const key=shoppingKey(i[0],i[2]);const qty=(qtyNumber(i[1])||0)*x.servings/(r.servings||1);const cost=ingredientCost(i);if(!groups[key])groups[key]={name:i[0],unit:i[2],qty:0,cost:0};groups[key].qty+=qty;if(cost!=null)groups[key].cost+=cost*x.servings/(r.servings||1)});addItems(r.ingredients||[]);if(r.variants){const v=Object.keys(r.variants)[0];addItems(r.variants[v]||[])}})}
   return Object.values(groups).sort((a,b)=>a.name.localeCompare(b.name,"fr"))
 }
@@ -500,10 +500,10 @@ function restorePilotWeek(){try{
  pilotWeekSelection=saved.map((v,d)=>{const i=typeof v==="number"?v:v.i,r=recipes[i];if(!r)return null;return {i,r,m:macroFor(r),cost:costFor(r),time:timeMinutes(r),pantry:pantryScore(r),score:80,day:typeof v==="number"?d%7:v.day,meal:typeof v==="number"?"soir":v.meal,servings:typeof v==="number"?pilotSettings().people:v.servings}}).filter(Boolean);
  if(pilotWeekSelection.length){$("pilotResult").classList.add("show");$("pilotWhy").textContent="Ta dernière semaine a été restaurée.";renderPilotWeek()}
  }catch(e){console.warn("Restauration de la semaine",e)}}
-function pilotPlanEntries(){const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];return pilotWeekSelection.map((x,d)=>({id:Date.now()+d,recipeIndex:x.i,day:days[x.day],meal:x.meal,servings:x.servings}))}
-function applyPilotWeek(){if(!pilotWeekSelection.length)generateIdealWeek();planner=planner.filter(p=>!p.pilot);pilotPlanEntries().forEach(x=>{x.pilot=true;planner.push(x)});savePlanner();showPlanner()}
-function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();const totals=new Map();pilotWeekSelection.forEach(x=>totals.set(x.i,(totals.get(x.i)||0)+x.servings));totals.forEach((portions,i)=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=portions;else batchSelection.push({recipeIndex:i,portions})});saveBatchSelection();render();showPlanner()}
-function pilotShopping(){pilotToBatch();showShopping()}
+function pilotPlanEntries(){const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];return pilotWeekSelection.map((x,d)=>({id:Date.now()+d,recipeIndex:x.i,day:x.day,meal:x.meal,servings:x.servings}))}
+function applyPilotWeek(){if(!pilotWeekSelection.length)generateIdealWeek();planner=[];batchSelection=[];saveBatchSelection();shoppingChecked={};saveShoppingChecks();pilotPlanEntries().forEach(x=>{x.pilot=true;planner.push(x)});savePlanner();showPlanner()}
+function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();planner=[];savePlanner();batchSelection=[];const totals=new Map();pilotWeekSelection.forEach(x=>totals.set(x.i,(totals.get(x.i)||0)+x.servings));totals.forEach((portions,i)=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=portions;else batchSelection.push({recipeIndex:i,portions})});saveBatchSelection();render();showPlanner()}
+function pilotShopping(){applyPilotWeek();showShopping()}
 function showPilotLab(){showHealthyPage("home");setActiveNav("pilot");$("pilotCard").scrollIntoView({behavior:"smooth",block:"start"})}
 function updateHomeDashboard(){
   const d=$("homeDashboard"),s=$("smartHome"),p=$("pilotCard");if(!d)return;
