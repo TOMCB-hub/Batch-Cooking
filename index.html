@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MiamPilot V14 UX First — Full Access</title>
+<title>MiamPilot V15 UX First — Full Access</title>
 
 <style>
 :root{--bg:#f7f5f0;--card:#fff;--text:#202522;--muted:#6b746d;--accent:#2f6f5e;--accent-dark:#245647;--accent-soft:#e8f1ed;--line:#e5e1d8;--shadow:0 8px 30px rgba(31,43,36,.08)}
@@ -55,7 +55,7 @@ button{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
 .v13-badge{display:inline-flex;align-items:center;gap:6px;background:#ffffff18;border:1px solid #ffffff2d;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:850;margin-left:auto}.pilot-card{background:linear-gradient(135deg,#fff,#edf7f2);border:1px solid #cfe3da;border-radius:24px;padding:22px;margin:18px 0;box-shadow:var(--shadow)}.pilot-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.pilot-head h2{font-size:clamp(25px,4vw,34px);margin:4px 0 6px;letter-spacing:-.6px}.pilot-head p{margin:0;color:var(--muted);max-width:700px;line-height:1.5}.free-pill{background:#173e33;color:#fff;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:850}.pilot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 14px}.pilot-field label{display:block;font-size:11px;font-weight:850;color:var(--muted);margin-bottom:6px}.pilot-field select,.pilot-field input{width:100%;height:43px;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#fff}.pilot-generate{width:100%;border:0;border-radius:13px;padding:13px;background:var(--accent);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(47,111,94,.2)}.pilot-result{display:none;margin-top:15px;border-top:1px solid var(--line);padding-top:15px}.pilot-result.show{display:block}.pilot-result-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.pilot-week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:11px;overflow:auto}.pilot-day{min-width:105px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}.pilot-day strong{font-size:11px;color:var(--accent-dark)}.pilot-day span{display:block;font-size:11px;line-height:1.3;margin-top:6px}.pilot-day small{display:block;color:var(--muted);margin-top:5px}.pilot-summary{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pilot-summary span{background:var(--accent-soft);border-radius:999px;padding:6px 9px;font-size:11px;font-weight:750}.pilot-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pilot-cta button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;font-weight:750;cursor:pointer}.pilot-cta .primary{background:var(--accent);color:#fff;border-color:var(--accent)}.premium-preview{margin-top:14px;background:#faf9f5;border:1px dashed #c9c3b7;border-radius:12px;padding:11px;font-size:12px;color:var(--muted)}
 @media(max-width:850px){.pilot-grid{grid-template-columns:1fr 1fr}.pilot-week{grid-template-columns:repeat(7,125px)}}@media(max-width:500px){.pilot-grid{grid-template-columns:1fr}.pilot-card{padding:16px}}
 
-/* V14 TESTEUR — Full Access */
+/* V15 TESTEUR — Full Access */
 .tester-pill{display:inline-flex;align-items:center;gap:6px;background:#fff3c7;color:#6b5200;border:1px solid #ead58c;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}
 .pilot-card{border:2px solid #c7ded5}
 .pilot-advanced{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
@@ -68,22 +68,22 @@ button{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
 .fullaccess-note{margin-top:12px;background:#edf7f2;border:1px solid #c9e1d7;border-radius:12px;padding:11px;font-size:12px}
 @media(max-width:850px){.pilot-advanced,.pilot-insights{grid-template-columns:repeat(2,1fr)}}@media(max-width:500px){.pilot-advanced,.pilot-insights{grid-template-columns:1fr}}
 .pilot-advanced-wrap{margin:12px 0;border:1px solid #cbded5;border-radius:12px;padding:12px;background:#f7fbf9}.pilot-advanced-wrap summary{cursor:pointer;font-weight:800;color:#245a47}.pilot-onboarding{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:14px 0;font-size:12px}.pilot-onboarding span{color:#64776e}.pilot-generate{box-shadow:0 8px 22px #1b624b33;font-weight:900}.pilot-card{scroll-margin-top:20px}@media(max-width:700px){.pilot-onboarding{display:block}.pilot-onboarding span{display:block;margin-top:5px}}
-</style>
+.pilot-meal-options{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:#e9f4ee;border-radius:12px}.pilot-meal-options label{font-size:13px;font-weight:700}.pilot-meal-options input{accent-color:#247257}.pilot-day-actions input{width:52px;padding:4px;border:1px solid #ddd;border-radius:5px}.pilot-day-actions label{font-size:11px}.pilot-week{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))!important}</style>
 </head>
 <body>
 <header><div class="hero"><div class="brand"><div class="brand-mark">🍽️</div><div><strong>MiamPilot <span style="font-size:10px;opacity:.8">V13</span></strong><div style="font-size:12px;color:#dcebe5">Ta semaine de repas, prête en 60 secondes</div></div></div><div class="hero-copy"><h1>Mieux manger.<br>Sans compter ni planifier.</h1><p>MiamPilot transforme tes objectifs, ton temps et ton budget en une semaine de repas simple, gourmande et prête à cuisiner.</p><div class="hero-actions"><button class="hero-action primary" onclick="showHealthyPage('home')">🍽️ Voir les recettes</button><button class="hero-action" onclick="showPlanner()">📅 Construire ma semaine</button><button class="hero-action" onclick="showShopping()">🛒 Ouvrir mes courses</button></div></div><div class="hero-stats"><span class="hero-stat">🥘 Cuisson au four</span><span class="hero-stat">💪 Protéiné</span><span class="hero-stat">🥗 Healthy</span><span class="hero-stat">📦 Batch cooking</span><span class="hero-stat">💶 Budget / portion</span></div><div class="hero-kpis"><div class="hero-kpi"><strong>40+ recettes</strong><span>plats & gourmandises</span></div><div class="hero-kpi"><strong>1–4 portions</strong><span>quantités recalculées</span></div><div class="hero-kpi"><strong>Macros</strong><span>kcal · protéines · lipides · glucides</span></div><div class="hero-kpi"><strong>Courses auto</strong><span>regroupées & cochables</span></div></div></div></header>
 <main>
-<div class="side-nav-mobile" id="mobileNav"><button data-page="home" onclick="showHealthyPage('home')">🏠 Accueil</button><button data-page="pilot" onclick="showPilotLab()">✨ Ma semaine IA</button><button data-page="plats" onclick="showHealthyPage('plats')">🥗 Plats healthy</button><button data-page="desserts" onclick="showHealthyPage('desserts')">🍰 Desserts & collations</button><button data-page="batch" onclick="showPlanner()">📦 Batch cooking</button><button data-page="shopping" onclick="showShopping()">🛒 Courses</button></div>
-<div class="site-layout"><aside class="side-nav" id="sideNav"><div class="side-nav-title">MiamPilot · TESTEUR</div><button data-page="home" onclick="showHealthyPage('home')">🏠 Accueil</button><button data-page="pilot" onclick="showPilotLab()">✨ Ma semaine IA</button><button data-page="plats" onclick="showHealthyPage('plats')">🥗 Plats healthy</button><button data-page="desserts" onclick="showHealthyPage('desserts')">🍰 Desserts & collations</button><div class="nav-sep"></div><div class="side-nav-title">Organisation</div><button data-page="batch" onclick="showPlanner()">📦 Mon batch cooking</button><button data-page="shopping" onclick="showShopping()">🛒 Ma liste de courses</button><button data-page="profile" onclick="showProfile()">🧺 Mes ingrédients</button></aside><div class="site-content"><section id="catalog"><section class="pilot-card" id="pilotCard">
-<div class="pilot-head"><div><div class="page-kicker">MiamPilot · V14 TESTEUR</div><h2>✨ Construis ma semaine idéale</h2><p>Le moteur teste toutes les fonctions prévues : objectif, calories, protéines, temps, budget, ingrédients disponibles, variété et remplacement intelligent.</p></div><span class="tester-pill">🔓 FULL ACCESS</span></div>
+<div class="side-nav-mobile" id="mobileNav"><button data-page="home" onclick="showHealthyPage('home')">🏠 Accueil</button><button data-page="pilot" onclick="showPilotLab()">✨ Ma semaine en 1 clic</button><button data-page="plats" onclick="showHealthyPage('plats')">🥗 Plats healthy</button><button data-page="desserts" onclick="showHealthyPage('desserts')">🍰 Desserts & collations</button><button data-page="batch" onclick="showPlanner()">📦 Batch cooking</button><button data-page="shopping" onclick="showShopping()">🛒 Courses</button></div>
+<div class="site-layout"><aside class="side-nav" id="sideNav"><div class="side-nav-title">MiamPilot · TESTEUR</div><button data-page="home" onclick="showHealthyPage('home')">🏠 Accueil</button><button data-page="pilot" onclick="showPilotLab()">✨ Ma semaine en 1 clic</button><button data-page="plats" onclick="showHealthyPage('plats')">🥗 Plats healthy</button><button data-page="desserts" onclick="showHealthyPage('desserts')">🍰 Desserts & collations</button><div class="nav-sep"></div><div class="side-nav-title">Organisation</div><button data-page="batch" onclick="showPlanner()">📦 Mon batch cooking</button><button data-page="shopping" onclick="showShopping()">🛒 Ma liste de courses</button><button data-page="profile" onclick="showProfile()">🧺 Mes ingrédients</button></aside><div class="site-content"><section id="catalog"><section class="pilot-card" id="pilotCard">
+<div class="pilot-head"><div><div class="page-kicker">MiamPilot · V15 TESTEUR</div><h2>✨ Construis ma semaine idéale</h2><p>Le moteur teste toutes les fonctions prévues : objectif, calories, protéines, temps, budget, ingrédients disponibles, variété et remplacement intelligent.</p></div><span class="tester-pill">🔓 FULL ACCESS</span></div>
 <div class="pilot-grid">
 <div class="pilot-field"><label>Mon objectif</label><select id="pilotGoal"><option value="balanced">Mieux manger</option><option value="loss">Perte de poids</option><option value="protein">Plus de protéines</option></select></div>
 <div class="pilot-field"><label>Temps maximum / repas</label><select id="pilotTime"><option value="999">Peu importe</option><option value="30">30 min</option><option value="45">45 min</option></select></div>
 <div class="pilot-field"><label>Budget / portion</label><select id="pilotBudget"><option value="999">Peu importe</option><option value="3">3 € max</option><option value="4">4 € max</option><option value="5">5 € max</option></select></div>
 <div class="pilot-field"><label>Personnes</label><select id="pilotPeople"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
 </div>
-<details class="pilot-advanced-wrap" id="pilotAdvanced"><summary>⚙️ Personnaliser davantage (options avancées)</summary><div class="pilot-advanced">
-<div class="pilot-field"><label>Repas à générer</label><select id="pilotMeals"><option>5</option><option selected>7</option><option>10</option><option>14</option></select></div>
+<details class="pilot-advanced-wrap" id="pilotAdvanced"><summary>⚙️ Personnaliser davantage (options avancées)</summary><div class="pilot-meal-options"><strong>Je prépare :</strong><label><input type="checkbox" id="pilotLunch" checked> ☀️ Déjeuners</label><label><input type="checkbox" id="pilotDinner" checked> 🌙 Dîners</label><label><input type="checkbox" id="pilotSnack"> 🍎 Collations</label></div><div class="pilot-advanced">
+<div class="pilot-field"><label>Jours à planifier</label><select id="pilotDays"><option value="5" selected>Lundi au vendredi</option><option value="7">Lundi au dimanche</option></select></div>
 <div class="pilot-field"><label>Cible kcal / repas</label><input id="pilotKcal" type="number" min="250" max="1000" step="50" value="500"></div>
 <div class="pilot-field"><label>Protéines min. / repas</label><input id="pilotProtein" type="number" min="0" max="100" step="5" value="35"></div>
 <div class="pilot-field"><label>Priorité</label><select id="pilotPriority"><option value="variety">Variété</option><option value="budget">Budget</option><option value="pantry">Utiliser mes ingrédients</option><option value="protein">Protéines</option></select></div>
@@ -456,7 +456,7 @@ function setActiveNav(page){
 let pilotWeekSelection=[];
 let pilotGeneration=0;
 function generateNextWeek(){pilotGeneration+=3;generateIdealWeek(true)}
-function pilotSettings(){return {goal:$("pilotGoal").value,maxTime:+$("pilotTime").value,maxBudget:+$("pilotBudget").value,people:+$("pilotPeople").value||2,count:+$("pilotMeals").value||7,kcal:+$("pilotKcal").value||500,protein:+$("pilotProtein").value||0,priority:$("pilotPriority").value}}
+function pilotSettings(){return {goal:$("pilotGoal").value,maxTime:+$("pilotTime").value,maxBudget:+$("pilotBudget").value,people:+$("pilotPeople").value||2,count:+$("pilotDays").value||5,lunch:$("pilotLunch").checked,dinner:$("pilotDinner").checked,snack:$("pilotSnack").checked,kcal:+$("pilotKcal").value||500,protein:+$("pilotProtein").value||0,priority:$("pilotPriority").value}}
 function pilotCandidates(exclude=[]){
  const s=pilotSettings();
  let arr=recipes.map((r,i)=>({r,i,m:macroFor(r),cost:costFor(r),time:timeMinutes(r),pantry:pantryScore(r)})).filter(x=>x.r.category==="Plats"&&!exclude.includes(x.i)&&x.time<=s.maxTime&&(s.maxBudget>=999||x.cost==null||x.cost<=s.maxBudget));
@@ -465,31 +465,44 @@ function pilotCandidates(exclude=[]){
 }
 function pickPilot(pool,pos,reroll,selected=[]){if(!pool.length)return null;const scored=pool.map(x=>{const ingredients=(x.r.ingredients||[]).map(i=>canon(i[0]));let overlap=0;for(const prev of selected){const prevIng=(prev.r.ingredients||[]).map(i=>canon(i[0]));overlap+=ingredients.filter(i=>prevIng.includes(i)).length}const variation=((pos*7+pilotGeneration*3+x.i*11)%13)/3;return {...x,score:x.score+Math.min(10,overlap*1.8)+variation}}).sort((a,b)=>b.score-a.score);return scored[(reroll?pilotGeneration:0)%Math.min(scored.length,3)]}
 function renderPilotWeek(){
- const labels=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
- $("pilotWeek").innerHTML=pilotWeekSelection.map((x,d)=>'<div class="pilot-day"><strong>'+(labels[d%7]||("Repas "+(d+1)))+(d>=7?" · "+(d<14?"S2":""):"")+'</strong><span>'+x.r.title+'</span><small>🔥 '+x.m.kcal+' kcal · 💪 '+x.m.p+' g'+(x.cost!=null?' · 💶 '+money(x.cost):'')+'</small><div class="pilot-score">Compatibilité '+Math.max(1,Math.min(99,Math.round(x.score)))+'%</div><div class="pilot-day-actions"><button onclick="replacePilotMeal('+d+')">↻ Remplacer</button><button onclick="openRecipe('+x.i+')">Voir</button></div></div>').join("");
- const avg=Math.round(pilotWeekSelection.reduce((s,x)=>s+x.m.kcal,0)/pilotWeekSelection.length),prot=Math.round(pilotWeekSelection.reduce((s,x)=>s+x.m.p,0)/pilotWeekSelection.length),known=pilotWeekSelection.filter(x=>x.cost!=null),cost=known.length?known.reduce((s,x)=>s+x.cost,0):null,s=pilotSettings();
- $("pilotSummary").innerHTML='<span>🔥 ~'+avg+' kcal / repas</span><span>💪 ~'+prot+' g protéines</span>'+(cost!=null?'<span>💶 ~'+money(cost*s.people)+' la sélection pour '+s.people+'</span>':'');
- const unique=new Set(pilotWeekSelection.map(x=>x.i)).size,pantryHits=pilotWeekSelection.reduce((n,x)=>n+x.pantry,0),mins=pilotWeekSelection.reduce((n,x)=>n+(x.time<999?x.time:0),0);
- $("pilotInsights").innerHTML='<div class="pilot-insight"><strong>'+unique+'/'+pilotWeekSelection.length+'</strong><span>repas différents</span></div><div class="pilot-insight"><strong>'+pantryHits+'</strong><span>correspondances garde-manger</span></div><div class="pilot-insight"><strong>~'+mins+' min</strong><span>temps cuisine cumulé</span></div><div class="pilot-insight"><strong>'+s.people+'</strong><span>personne'+(s.people>1?'s':'')+'</span></div>';
- localStorage.setItem("miamPilotTesterWeek",JSON.stringify(pilotWeekSelection.map(x=>x.i)));
+ const labels=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"],types={midi:"Déjeuner",soir:"Dîner",collation:"Collation"};
+ $("pilotWeek").innerHTML=pilotWeekSelection.map((x,d)=>'<div class="pilot-day"><strong>'+labels[x.day??d%7]+' · '+(types[x.meal]||"Repas")+'</strong><span>'+x.r.title+'</span><small>🔥 '+x.m.kcal+' kcal · 💪 '+x.m.p+' g'+(x.cost!=null?' · 💶 '+money(x.cost):'')+'</small><div class="pilot-day-actions"><button onclick="replacePilotMeal('+d+')">↻ Remplacer</button><button onclick="openRecipe('+x.i+')">Voir</button><label>Portions <input type="number" min="1" max="20" value="'+x.servings+'" onchange="setPilotServings('+d+',this.value)"></label></div></div>').join("");
+ const avg=Math.round(pilotWeekSelection.reduce((s,x)=>s+x.m.kcal,0)/pilotWeekSelection.length),prot=Math.round(pilotWeekSelection.reduce((s,x)=>s+x.m.p,0)/pilotWeekSelection.length),cost=pilotWeekSelection.every(x=>x.cost!=null)?pilotWeekSelection.reduce((s,x)=>s+x.cost*x.servings,0):null;
+ $("pilotSummary").innerHTML='<span>'+pilotWeekSelection.length+' créneaux repas</span><span>🔥 ~'+avg+' kcal / portion</span><span>💪 ~'+prot+' g protéines / portion</span>'+(cost!=null?'<span>💶 ~'+money(cost)+' au total</span>':'<span>💶 Budget incomplet : prix manquants</span>');
+ const total=pilotWeekSelection.reduce((n,x)=>n+x.servings,0),unique=new Set(pilotWeekSelection.map(x=>x.i)).size;
+ $("pilotInsights").innerHTML='<div class="pilot-insight"><strong>'+total+'</strong><span>portions à préparer</span></div><div class="pilot-insight"><strong>'+unique+'</strong><span>recettes différentes</span></div><div class="pilot-insight"><strong>'+pilotWeekSelection.filter(x=>x.meal==="midi").length+'</strong><span>déjeuners</span></div><div class="pilot-insight"><strong>'+pilotWeekSelection.filter(x=>x.meal==="soir").length+'</strong><span>dîners</span></div>';
+ localStorage.setItem("miamPilotTesterWeek",JSON.stringify(pilotWeekSelection.map(x=>({i:x.i,day:x.day,meal:x.meal,servings:x.servings}))));
 }
+function setPilotServings(pos,value){const x=pilotWeekSelection[pos];if(!x)return;x.servings=Math.max(1,Math.min(20,Number(value)||1));renderPilotWeek()}
+function pilotSlots(){const s=pilotSettings(),slots=[];for(let d=0;d<s.count;d++){if(s.lunch)slots.push({day:d,meal:"midi"});if(s.dinner)slots.push({day:d,meal:"soir"});if(s.snack)slots.push({day:d,meal:"collation"})}return slots}
 function generateIdealWeek(reroll=false){
  if(reroll)pilotGeneration++;
- const s=pilotSettings(),pool=pilotCandidates();if(!pool.length){$("pilotResult").classList.add("show");$("pilotWeek").innerHTML='<div class="empty">Aucune recette ne correspond. Élargis le temps ou le budget.</div>';return}
+ const s=pilotSettings(),slots=pilotSlots(),pool=pilotCandidates();
+ if(!slots.length){alert("Choisis au moins un type de repas.");return}
+ if(!pool.length&&slots.some(x=>x.meal!=="collation")){alert("Aucun plat ne correspond. Élargis le temps ou le budget.");return}
  pilotWeekSelection=[];const used=[];
- for(let d=0;d<s.count;d++){let choices=pilotCandidates(used.length<Math.min(s.count,pool.length)?used:[]);let x=pickPilot(choices,d,reroll,pilotWeekSelection)||pool[d%pool.length];pilotWeekSelection.push(x);if(!used.includes(x.i))used.push(x.i)}
- const labels={balanced:"équilibrée",loss:"orientée perte de poids",protein:"riche en protéines"};$("pilotWhy").textContent='Sélection '+labels[s.goal]+' · cible '+s.kcal+' kcal · ≥ '+s.protein+' g protéines · priorité '+s.priority+'.';
+ for(let d=0;d<slots.length;d++){
+  const slot=slots[d];let choices;
+  if(slot.meal==="collation")choices=recipes.map((r,i)=>({r,i,m:macroFor(r),cost:costFor(r),time:timeMinutes(r),pantry:pantryScore(r),score:80})).filter(x=>x.r.category==="Desserts / Collations");
+  else choices=pilotCandidates(used.length<Math.min(slots.length,pool.length)?used:[]);
+  const x=pickPilot(choices,d,reroll,pilotWeekSelection)||choices[0];
+  if(!x)continue;
+  pilotWeekSelection.push({...x,...slot,servings:s.people});used.push(x.i);
+ }
+ $("pilotWhy").textContent=s.count+' jours · '+pilotWeekSelection.length+' créneaux · '+s.people+' portion(s) par repas par défaut.';
  $("pilotResult").classList.add("show");renderPilotWeek();
 }
 function replacePilotMeal(pos){
  if(!pilotWeekSelection[pos])return;const used=pilotWeekSelection.map(x=>x.i),pool=pilotCandidates(used);let x=pool[0];if(!x){const alt=pilotCandidates([pilotWeekSelection[pos].i]);x=alt[(pilotGeneration+pos)%Math.max(1,alt.length)]}if(x){pilotWeekSelection[pos]=x;pilotGeneration++;renderPilotWeek()}
 }
-function restorePilotWeek(){try{const saved=JSON.parse(localStorage.getItem("miamPilotTesterWeek")||"[]");if(!Array.isArray(saved)||!saved.length)return;const pool=pilotCandidates();pilotWeekSelection=saved.map(i=>pool.find(x=>x.i===i)).filter(Boolean);if(pilotWeekSelection.length){$("pilotResult").classList.add("show");$("pilotWhy").textContent="Ta dernière semaine a été restaurée.";renderPilotWeek()}}catch(e){console.warn("Restauration de la semaine",e)}}
-function pilotPlanEntries(){
- const s=pilotSettings(),days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];return pilotWeekSelection.map((x,d)=>({id:Date.now()+d,recipeIndex:x.i,day:days[d%7],meal:d<7?"soir":"midi",servings:s.people}))
-}
+function restorePilotWeek(){try{
+ const saved=JSON.parse(localStorage.getItem("miamPilotTesterWeek")||"[]");if(!Array.isArray(saved)||!saved.length)return;
+ pilotWeekSelection=saved.map((v,d)=>{const i=typeof v==="number"?v:v.i,r=recipes[i];if(!r)return null;return {i,r,m:macroFor(r),cost:costFor(r),time:timeMinutes(r),pantry:pantryScore(r),score:80,day:typeof v==="number"?d%7:v.day,meal:typeof v==="number"?"soir":v.meal,servings:typeof v==="number"?pilotSettings().people:v.servings}}).filter(Boolean);
+ if(pilotWeekSelection.length){$("pilotResult").classList.add("show");$("pilotWhy").textContent="Ta dernière semaine a été restaurée.";renderPilotWeek()}
+ }catch(e){console.warn("Restauration de la semaine",e)}}
+function pilotPlanEntries(){const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];return pilotWeekSelection.map((x,d)=>({id:Date.now()+d,recipeIndex:x.i,day:days[x.day],meal:x.meal,servings:x.servings}))}
 function applyPilotWeek(){if(!pilotWeekSelection.length)generateIdealWeek();planner=planner.filter(p=>!p.pilot);pilotPlanEntries().forEach(x=>{x.pilot=true;planner.push(x)});savePlanner();showPlanner()}
-function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();const people=pilotSettings().people;[...new Set(pilotWeekSelection.map(x=>x.i))].forEach(i=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=Math.max(e.portions||people,people);else batchSelection.push({recipeIndex:i,portions:people})});saveBatchSelection();render();showPlanner()}
+function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();const totals=new Map();pilotWeekSelection.forEach(x=>totals.set(x.i,(totals.get(x.i)||0)+x.servings));totals.forEach((portions,i)=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=portions;else batchSelection.push({recipeIndex:i,portions})});saveBatchSelection();render();showPlanner()}
 function pilotShopping(){pilotToBatch();showShopping()}
 function showPilotLab(){showHealthyPage("home");setActiveNav("pilot");$("pilotCard").scrollIntoView({behavior:"smooth",block:"start"})}
 function updateHomeDashboard(){
@@ -520,5 +533,6 @@ function showCatalog(){resetFilters(false);setActiveNav("home");$("planner").sty
 $("shoppingPage").style.display="none";
 updateHomeDashboard();
 render();
+restorePilotWeek();
 </script>
 </body></html>
