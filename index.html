@@ -501,9 +501,9 @@ function restorePilotWeek(){try{
  if(pilotWeekSelection.length){$("pilotResult").classList.add("show");$("pilotWhy").textContent="Ta dernière semaine a été restaurée.";renderPilotWeek()}
  }catch(e){console.warn("Restauration de la semaine",e)}}
 function pilotPlanEntries(){const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];return pilotWeekSelection.map((x,d)=>({id:Date.now()+d,recipeIndex:x.i,day:x.day,meal:x.meal,servings:x.servings}))}
-function applyPilotWeek(){if(!pilotWeekSelection.length)generateIdealWeek();planner=[];batchSelection=[];saveBatchSelection();shoppingChecked={};saveShoppingChecks();pilotPlanEntries().forEach(x=>{x.pilot=true;planner.push(x)});savePlanner();showPlanner()}
-function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();planner=[];savePlanner();batchSelection=[];const totals=new Map();pilotWeekSelection.forEach(x=>totals.set(x.i,(totals.get(x.i)||0)+x.servings));totals.forEach((portions,i)=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=portions;else batchSelection.push({recipeIndex:i,portions})});saveBatchSelection();render();showPlanner()}
-function pilotShopping(){applyPilotWeek();showShopping()}
+function applyPilotWeek(){if(!pilotWeekSelection.length)generateIdealWeek();if(!pilotWeekSelection.length)return;planner=[];batchSelection=[];saveBatchSelection();shoppingChecked={};saveShoppingChecks();pilotPlanEntries().forEach(x=>{x.pilot=true;planner.push(x)});savePlanner();showPlanner()}
+function pilotToBatch(){if(!pilotWeekSelection.length)generateIdealWeek();if(!pilotWeekSelection.length)return;planner=[];savePlanner();batchSelection=[];const totals=new Map();pilotWeekSelection.forEach(x=>totals.set(x.i,(totals.get(x.i)||0)+x.servings));totals.forEach((portions,i)=>{const e=batchSelection.find(x=>x.recipeIndex===i);if(e)e.portions=portions;else batchSelection.push({recipeIndex:i,portions})});saveBatchSelection();render();showPlanner()}
+function pilotShopping(){if(!pilotWeekSelection.length)generateIdealWeek();if(!pilotWeekSelection.length)return;planner=pilotPlanEntries().map(x=>({...x,pilot:true}));batchSelection=[];shoppingChecked={};saveShoppingChecks();saveBatchSelection();savePlanner();showShopping()}
 function showPilotLab(){showHealthyPage("home");setActiveNav("pilot");$("pilotCard").scrollIntoView({behavior:"smooth",block:"start"})}
 function updateHomeDashboard(){
   const d=$("homeDashboard"),s=$("smartHome"),p=$("pilotCard");if(!d)return;
